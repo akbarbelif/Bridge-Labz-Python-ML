@@ -3,9 +3,10 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 
-bikedf=pd.read_csv('bike_sharing.csv')
-x=bikedf["temp"].values
-y=bikedf["cnt"].values
+dataset=pd.read_csv('../Regression/bike_sharing.csv')
+
+x=dataset["temp"].values
+y=dataset["cnt"].values
 
 plt.scatter(x,y,color="red")
 
