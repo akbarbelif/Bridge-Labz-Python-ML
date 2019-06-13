@@ -1,14 +1,63 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler,OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder
 
 
 #Logic for Algorithm Creation
 class RegressionModelPreparation:
+    @staticmethod
+    def Storing_data(self,csv_path):
+        # Store Data into training and testing csv
+        dataset = pd.read_csv(csv_path)
+        #old_lenght = len(dataset.columns)
 
-    #Function use to Preparing Data for Processing
-    def _datapreprocessing(self,csv_file_path):
+        # Split dataset into Train and Testing
+        from sklearn.model_selection import train_test_split
+        train, test = train_test_split(dataset, test_size=0.2)
+
+        # Export train and testing data into csv format
+        train.to_csv('training.csv', header=True, index=None)
+        test.to_csv('testing.csv', header=True, index=None)
+
+
+    # Data preprocessing
+    # ******Step 1**********#
+    # Handle Missing Data
+    def handle_null(self,dataset,column):
+
+        if dataset.isnull().sum().sum() > 0:
+            from sklearn.impute import SimpleImputer
+            # set strategy to mean/median/most-Frequent
+            print("Check the Salary for NUll Value")
+            impute = SimpleImputer(missing_values=np.nan, strategy='mean')
+            new_column = impute.fit_transform(column)
+            print("Null Resolved\n:", new_column)
+            return new_column
+
+    # ******Step 2**********#
+    # Standard Scaling
+    def stand_scaler(column):
+        from sklearn.preprocessing import StandardScaler
+
+        # formula z=(x-u)/s
+        scX = StandardScaler()
+        new_column = scX.fit_transform(column)
+        print("Standard Scaling Colum:\n", new_column)
+        return new_column
+
+    # ******Step 3**********#
+    # Label Encoder
+    def label_encode(column):
+
+        from sklearn.preprocessing import LabelEncoder
+        lbX = LabelEncoder()
+        new_column = lbX.fit_transform(column)
+        print("Label column:\n", new_column)
+        return new_column
+
+'''''''''#Function use to Preparing Data for Processing
+  def _datapreprocessing(self,csv_file_path):
         #assigning Missing variable
         missing_value=["na","n/a","","-"]
         dataset=pd.read_csv(csv_file_path,na_values=missing_value)
@@ -33,6 +82,6 @@ class RegressionModelPreparation:
                 dataset=pd.concat([ds,convertdata],axis=1)
 
         return dataset
-
+'''''''''
 
 obj_alog=RegressionModelPreparation()
