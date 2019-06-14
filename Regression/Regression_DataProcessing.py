@@ -1,3 +1,6 @@
+#@ Author Akbar Belif
+
+# Import Class Library
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,18 +10,18 @@ from sklearn.preprocessing import OneHotEncoder
 #Logic for Algorithm Creation
 class RegressionModelPreparation:
     @staticmethod
-    def Storing_data(self,csv_path):
+    def Storing_data(csv_path):
         # Store Data into training and testing csv
-        dataset = pd.read_csv(csv_path)
+        dataset = pd.read_csv(csv_path,delimiter=None,sep=",")
         #old_lenght = len(dataset.columns)
-
+        print(dataset)
         # Split dataset into Train and Testing
         from sklearn.model_selection import train_test_split
         train, test = train_test_split(dataset, test_size=0.2)
 
         # Export train and testing data into csv format
-        train.to_csv('training.csv', header=True, index=None)
-        test.to_csv('testing.csv', header=True, index=None)
+        train.to_csv('../Scaler_Vector_Regression/Data/training.csv', header=True, index=None)
+        test.to_csv('../Scaler_Vector_Regression/Data/testing.csv', header=True, index=None)
 
 
     # Data preprocessing
