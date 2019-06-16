@@ -9,7 +9,6 @@ from Classification.Classifier_LoadingnUnloadingModel import *
 
 class Rand_forest_classifier:
 
-
     def __int__(self,input_data_path,train_data_path):
         try:
 
@@ -45,7 +44,7 @@ class Rand_forest_classifier:
 
 
 
-input_path="/home/admin1/Desktop/Deep-Learing/Classification/Random_forest_Classification/Data"
-training_path="../Random_forest_Classification/Data/training.csv"
+input_path="../Deep-Learing/Classification/Input_data/Social_Network_Ads.csv"
+training_path="../Deep-Learing/Classification/Random_forest_Classification/Data/training.csv"
 RandomForestClassifier(input_path,training_path)
 
