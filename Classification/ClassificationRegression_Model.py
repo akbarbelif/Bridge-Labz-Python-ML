@@ -40,19 +40,20 @@ class ClassificationRegression_Model:
         plt.legend()
         plt.show()
 
-        return y_pred
+        scm_reg_pred=y_pred,classifier_reg
+        return scm_reg_pred
 
 
 #SCM_Classification
     def SCM_classifier(trainX,trainy,testX,testY):
 
         scmclassifier_reg=SVC(kernel='linear',random_state=0)
-        scmclassifier_reg.fit(trainX , trainy)
+        scmclassifier_reg.fit(trainX ,trainy.ravel())
         y_pred = scmclassifier_reg.predict(testX)
 
-        # Visualising  the Training set Result
+        #Visualising  the Training set Result
         from matplotlib.colors import ListedColormap
-        X_Set,Y_Set=trainX,trainy
+        X_Set,Y_Set=trainX,trainy.ravel()
         X1,X2=np.meshgrid(np.arange(start=X_Set[:,0].min() -1,stop=X_Set[:,0].max() +1,step=0.01),
                           np.arange(start=X_Set[:,1].min()-1,stop=X_Set[:,1].max() +1 ,step=0.01))
 

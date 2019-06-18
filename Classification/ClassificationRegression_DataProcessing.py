@@ -6,109 +6,73 @@ import pandas as pd
 import csv
 #import matplotlib.pyplot as plt
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.impute import SimpleImputer
 
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
 
 #Data Processing
 class ClassificationRegressionModelPreparation:
 
-    def data_processing(self,csv_path):
+    def data_processing(csv_file_path,outputpath):
 
         #Read Csv file to dataset
-        dataset = pd.read_csv(csv_path)
-        old_lenght = len(dataset)
+        dataset = pd.read_csv(csv_file_path)
+        old_lenght = len(dataset.columns)
         print("Length:\n", old_lenght)
-        #dataset_header=pd.DataFrame(dataset.head(n=0))
 
-        #if dataset.isnull().sum().sum() > 0:
-        print("DataFrame has Null Value.")
 
+        #Handle Null Value
         for i in dataset.columns:
             if dataset[i].isnull().sum().sum() > 0:
-
+                print("DataFrame has Null Value.")
                 if (dataset[i].dtype == np.number):
-                    col_index=dataset.columns.get_loc(i)
-                    self.handle_null(col_index,"mean")
+                    dataset=obj_Classreg.handle_null(dataset,i,"mean")
                 else:
-                    col_index = dataset.columns.get_loc(i)
-                    self.handle_null(col_index,"most_frequency")
+                    dataset=obj_Classreg.handle_null(dataset,i,"most_frequent")
+                print("Null Resolved\n")
+        print(dataset)
+        #Categorical Processing / One Hot encoder
+        categorical_column = input("Enter Categorical Column Name:\n")
+        if len(categorical_column) > 0:
+            dataset=obj_Classreg.cat_encode(dataset,categorical_column)
+        else:
+            print("Dataset dont have Categorical Column\n")
 
-                    #obj_index=dataset.columns.getloc(i)
-                    #print("Index of", i, " is ", obj_index)
-                    #self.handle_null(obj_index,strategy)
+        #Standard Scaling
+        stand_scale_column = input("Stand Scale Column Name:\n")
+        dataset=obj_Classreg.stand_scaler(dataset,stand_scale_column)
 
-        print("Completed Successfully")
-        #  print("Object type\n",dataset.select_dtypes(include=[np.object]))
-        # dep_column = input("Enter Dependence Column")
-        # categorical_column = input("Enter Categorical")
-        #
-        # for i in dataset_header:
-        #     if  i in categorical_column:
-        #
-        #         dataset=self.cat_encode(self,dataset,categorical_column)
-        #         new_lenght=len(dataset)
-        #         print("New Lenght: ",new_lenght)
-        #
-        # if len(dep_column) > 0:
-        #     if  dep_column in dataset_header:
-        #        dataset=self.handle_null(dep_column)
-        # else:
-        #     print("Dependent variable is must")
+        print(dataset)
+        new_lenght = len(dataset.columns)
+        print(new_lenght)
 
-        # x_num_index = []
-        # x_cat_index = []
-        # X = pd.DataFrame()
-        # y_index=dataset.columns.get_loc(Dep_Column)
-        # Y=dataset.iloc[:,y_index: y_index + 1]
-        #
-        #
-        # #Numerical Column
-        # if len(Indep_Column_Number) > 0:
-        #     for i in Indep_Column_Categorical:
-        #         x_num_index.append(dataset.columns.get_loc(Indep_Column_Number[i]))
-        #     X=dataset.iloc[:,x_num_index:x_num_index+1]
-        #
-        # #Categorocal Column
-        # if len(Indep_Column_Categorical) > 0:
-        #     if len(Indep_Column_Number) > 0:
-        #         X=pd.concat(X,dataset.iloc[:,x_num_index:x_index +1],axis=1)
-        #     else:
-        #         for i in Indep_Column_Categorical:
-        #             x_cat_index.append(dataset.column.get_loc(Indep_Column_Categorical[i]))
-        #             X=dataset.iloc[:,x_cat_index:x_cat_index+1]
-        #
-        #
-        #
-        # if len(y_index) > 0:
-        #    dataset=self.handle_null(y_index)
-        #
-        # if len(Indep_Column_Number) > 0:
-        #     dataset=self.handle_null(x_index)
-        #
-        # if len(X_Categorical_index) > 0:
-        #     dataset=self.stand_scaler(X_Categorical_index)
-        #
-        # self.Storing_data(self,dataset)
+        training_path,testing_path=outputpath
+        obj_Classreg.Storing_data(dataset,training_path,testing_path)
 
     # Handle Missing Data
+    def handle_null(self,dataset,index,strategy):
 
-    def handle_null(self,col_index,strategy):
-
-            with SimpleImputer(missing_values=np.nan,strategy=strategy) as nan:
-                new_column=nan.fit_transform(col_index)
-
-            print("Null Resolved\n:", new_column)
-            return new_column
+        col_index = dataset.columns.get_loc(index)
+        imputer = SimpleImputer(missing_values=np.nan,strategy=strategy)
+        imputer = imputer.fit(dataset.iloc[:, col_index:col_index + 1])
+        dataset.iloc[:, col_index:col_index + 1] = imputer.fit_transform(dataset.iloc[:, col_index:col_index + 1])
+        # with SimpleImputer(missing_values=np.nan,strategy=strategy) as nan:
+        #     new_column=nan.fit_transform(self.col_index)
+        return dataset
 
     # Standard Scaling
-    def stand_scaler(self,column):
-        from sklearn.preprocessing import StandardScaler
-
-        # formula z=(x-u)/s
+    def stand_scaler(self,dataset,stand_column=[]):
         scX = StandardScaler()
-        new_column = scX.fit_transform(column)
-        #print("Standard Scaling Colum:\n", new_column)
-        return new_column
+        col_index = []
+
+        for i in stand_column.split(","):
+            col_index.append(dataset.columns.get_loc(i))
+        new_dataset = pd.DataFrame(scX.fit_transform(dataset.iloc[:, col_index]))
+        for i in stand_column.split(","):
+            dataset = dataset.drop(i, axis=1)
+        dataset = pd.concat([dataset, new_dataset], axis=1)
+        print("Standard/Feature Scaler Column Done Properly")
+        return dataset
 
     # Label Encoder
     def label_encode(self):
@@ -119,55 +83,26 @@ class ClassificationRegressionModelPreparation:
         print("Label column:\n", new_column)
         return new_column
 
-        # Dummies Categorical Variable
-    def cat_encode(self,dataset,Indep_column=[]):
+    # Dummies Categorical Variable
+    def cat_encode(self,dataset,cat_column):
 
-        for i in Indep_column:
-            new_column=pd.get_dummies(dataset[i])
-            dataset=dataset.drop(i,axis=1)
-            dataset=pd.concat([dataset,new_column],axis=1)
+        for i in cat_column.split(","):
+            new_column = pd.get_dummies(dataset[i])
+            dataset = dataset.drop(i, axis=1)
+            dataset = pd.concat([dataset, new_column], axis=1)
+            print("Categorial Column Done Properly")
+            return dataset
 
-        return dataset
-
-    def Storing_data(self, clean_dataset):
+    def Storing_data(self,clean_dataset,train_path,test_path):
 
         # Split dataset into Train and Testing
         from sklearn.model_selection import train_test_split
         train, test = train_test_split(clean_dataset, test_size=0.2)
-
         # Load train and testing data into csv format
-        train.to_csv('../Random_forest_Classification/Data/training.csv', header=True, index=None)
-        test.to_csv('../Random_forest_Classification/Data/testing.csv', header=True, index=None)
+        train.to_csv(train_path, header=True, index=None)
+        test.to_csv(test_path, header=True, index=None)
         print("Done Cleaning and Storing Records")
 
 
 
-'''''''''#Function use to Preparing Data for Processing
-  def _datapreprocessing(self,csv_file_path):
-        #assigning Missing variable
-        missing_value=["na","n/a","","-"]
-        dataset=pd.read_csv(csv_file_path,na_values=missing_value)
-
-        #Check For missing Data and null
-        # if(dataset.isnull().sum()>0):
-        #     print("Model has Missing Data")
-        # else:
-        new_dataset=dataset
-
-        # #Check If any Categorical Data Present
-        cat_col=dataset.select_dtypes(include=['object']).columns
-        if cat_col.dtype.name=='object':
-            cat_index=[dataset.columns.get_loc(c) for c in cat_col if c in dataset]
-            encoder_ds=new_dataset.iloc[:,cat_index]
-            onehotcoder=OneHotEncoder
-            for cat_loop in cat_index:
-                onehotcoder.fit(encoder_ds)
-                onehotlabel=onehotcoder.transform(encoder_ds).toarray()
-                convertdata=pd.DataFrame(onehotlabel)
-                ds=new_dataset.drop(cat_col,axis=1)
-                dataset=pd.concat([ds,convertdata],axis=1)
-
-        return dataset
-'''''''''
-
-obj_Classlog= ClassificationRegressionModelPreparation()
+obj_Classreg= ClassificationRegressionModelPreparation()
