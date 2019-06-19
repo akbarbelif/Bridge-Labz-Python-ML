@@ -13,41 +13,52 @@ from sklearn.preprocessing import StandardScaler
 #Data Processing
 class ClassificationRegressionModelPreparation:
 
-    def data_processing(csv_file_path,outputpath):
+    def __init__(self,input_data_path,outputpath):
+
+       self.csv_file_path=input_data_path
+       self.outputpath=outputpath
+       self.data_processing()
+
+
+    def data_processing(self):
 
         #Read Csv file to dataset
-        dataset = pd.read_csv(csv_file_path)
+        dataset = pd.read_csv(self.csv_file_path)
+        df_data=pd.DataFrame(dataset)
         old_lenght = len(dataset.columns)
         print("Length:\n", old_lenght)
 
-
         #Handle Null Value
-        for i in dataset.columns:
-            if dataset[i].isnull().sum().sum() > 0:
+        for i in df_data.columns:
+            if df_data[i].isnull().sum().sum() > 0:
                 print("DataFrame has Null Value.")
-                if (dataset[i].dtype == np.number):
-                    dataset=obj_Classreg.handle_null(dataset,i,"mean")
+                if (df_data[i].dtype == np.number):
+                    df_data=self.handle_null(df_data,i,"mean")
                 else:
-                    dataset=obj_Classreg.handle_null(dataset,i,"most_frequent")
+                    df_data=self.handle_null(df_data,i,"most_frequent")
                 print("Null Resolved\n")
-        print(dataset)
+
+
         #Categorical Processing / One Hot encoder
-        categorical_column = input("Enter Categorical Column Name:\n")
-        if len(categorical_column) > 0:
-            dataset=obj_Classreg.cat_encode(dataset,categorical_column)
-        else:
-            print("Dataset dont have Categorical Column\n")
+        if self.valid_check("Do you wanna Categorical Process(Yes/No):\n"):
+
+            categorical_column = input("Enter Categorical Column Name:\n")
+            if len(categorical_column) > 0:
+                   df_data=self.cat_encode(df_data,categorical_column)
+            else:
+                print("Dataset dont have Categorical Column\n")
 
         #Standard Scaling
-        stand_scale_column = input("Stand Scale Column Name:\n")
-        dataset=obj_Classreg.stand_scaler(dataset,stand_scale_column)
+        if self.valid_check("Do you wanna Standard Scale(Yes/No):\n"):
+            stand_scale_column = input("Stand Scale Column Name:\n")
+            df_data=self.stand_scaler(df_data,stand_scale_column)
 
-        print(dataset)
-        new_lenght = len(dataset.columns)
+        print(df_data)
+        new_lenght = len(df_data.columns)
         print(new_lenght)
 
-        training_path,testing_path=outputpath
-        obj_Classreg.Storing_data(dataset,training_path,testing_path)
+        training_path,testing_path=self.outputpath
+        self.Storing_data(df_data,training_path,testing_path)
 
     # Handle Missing Data
     def handle_null(self,dataset,index,strategy):
@@ -104,5 +115,12 @@ class ClassificationRegressionModelPreparation:
         print("Done Cleaning and Storing Records")
 
 
+    def valid_check(self,input_str):
+        yesno=input(input_str)
+        if yesno  in ["Yes","y"]:
+            return True
+        else:
+            return False
 
-obj_Classreg= ClassificationRegressionModelPreparation()
+
+#obj_Classreg= ClassificationRegressionModelPreparation()

@@ -19,12 +19,12 @@ class ClassificationRegression_Model:
     def Logistic_reg(trainX,trainy,testX,testY):
 
         classifier_reg=LogisticRegression(random_state=0)
-        classifier_reg.fit(trainX , trainy)
+        classifier_reg.fit(trainX , trainy.ravel())
         y_pred = classifier_reg.predict(testX)
 
         # Visualising  the Training set Result
         from matplotlib.colors import ListedColormap
-        X_Set,Y_Set=trainX,trainy
+        X_Set,Y_Set=trainX,trainy.ravel()
         X1,X2=np.meshgrid(np.arange(start=X_Set[:,0].min() -1,stop=X_Set[:,0].max() +1,step=0.01),
                           np.arange(start=X_Set[:,1].min()-1,stop=X_Set[:,1].max() +1 ,step=0.01))
 
@@ -40,8 +40,10 @@ class ClassificationRegression_Model:
         plt.legend()
         plt.show()
 
-        scm_reg_pred=y_pred,classifier_reg
-        return scm_reg_pred
+        print("Classifiction model:/n",classifier_reg)
+        print("Predication:/n",y_pred)
+        log_reg_pred=[y_pred,classifier_reg]
+        return log_reg_pred
 
 
 #SCM_Classification
@@ -68,20 +70,21 @@ class ClassificationRegression_Model:
         plt.ylabel("Estimated Salary")
         plt.legend()
         plt.show()
+        scm_reg_pred = [y_pred, scmclassifier_reg]
+        return scm_reg_pred
 
-        return y_pred
 
 #Decision_tree_Classification
     def Decision_tree_classifier(trainX,trainy,testX,testY):
 
         Dec_tree_classifier_reg=DecisionTreeClassifier(criterion='entropy',random_state=0)
-        Dec_tree_classifier_reg.fit(trainX , trainy)
+        Dec_tree_classifier_reg.fit(trainX , trainy.ravel())
         y_pred = Dec_tree_classifier_reg.predict(testX)
 
         # Visualising  the Training set Result
 
         from matplotlib.colors import ListedColormap
-        X_Set,Y_Set=trainX,trainy
+        X_Set,Y_Set=trainX,trainy.ravel()
         X1,X2=np.meshgrid(np.arange(start=X_Set[:,0].min() -1,stop=X_Set[:,0].max() +1,step=0.01),
                           np.arange(start=X_Set[:,1].min()-1,stop=X_Set[:,1].max() +1 ,step=0.01))
 
@@ -96,35 +99,21 @@ class ClassificationRegression_Model:
         plt.ylabel("Estimated Salary")
         plt.legend()
         plt.show()
-
-        return y_pred
+        dec_reg_pred = [y_pred,Dec_tree_classifier_reg]
+        return dec_reg_pred
 
 #Random Forest Classification
 
-    def Random_forest_classifier(self,trainX,trainy,testX,testY):
+    def Random_forest_classifier(trainX,trainy,testX,testY):
 
         Rand_forest_classifier_reg=RandomForestClassifier(n_estimators=10,criterion='entropy',random_state=0)
-        Rand_forest_classifier_reg.fit(trainX , trainy)
+        Rand_forest_classifier_reg.fit(trainX , trainy.ravel())
         y_pred = Rand_forest_classifier_reg.predict(testX)
-
-        print("\nY_predicted Value:\n", y_pred)
-        print("\nY_Ground True Value:\n", testY)
-
-        # Accuracy Calculation using confusion_matrix score
-        Accuracy = ClassificationRegression_Model.confusion_matix(testY, y_pred)
-        print("\nAccuary Between True value and Predicted Value:\n", Accuracy)
-
-        testmodel=testX,testY
-        filepath="../Classification/Random_forest_Classification/Data"
-        #Serialize and Deserailize Model to pickle
-        Classifier_Serialize_Deserialize_model.serializing_Model(self,RandomForestClassifier,filepath)
-        Classifier_Serialize_Deserialize_model.deSerializing_Model(self,RandomForestClassifier,filepath,testmodel)
-
 
         # Visualising  the Training set Result
 
         from matplotlib.colors import ListedColormap
-        X_Set,Y_Set=trainX,trainy
+        X_Set,Y_Set=trainX,trainy.ravel()
         X1,X2=np.meshgrid(np.arange(start=X_Set[:,0].min() -1,stop=X_Set[:,0].max() +1,step=0.01),
                           np.arange(start=X_Set[:,1].min()-1,stop=X_Set[:,1].max() +1 ,step=0.01))
 
@@ -139,8 +128,8 @@ class ClassificationRegression_Model:
         plt.ylabel("Estimated Salary")
         plt.legend()
         plt.show()
-
-        #return y_pred
+        rand_reg_pred=[y_pred,Rand_forest_classifier_reg]
+        return rand_reg_pred
 
 #Calculate R2 Score for Accuracy Measurement
     @staticmethod
