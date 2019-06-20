@@ -45,6 +45,8 @@ class ClassificationRegressionModelPreparation:
             categorical_column = input("Enter Categorical Column Name:\n")
             if len(categorical_column) > 0:
                    df_data=self.cat_encode(df_data,categorical_column)
+
+
             else:
                 print("Dataset dont have Categorical Column\n")
 

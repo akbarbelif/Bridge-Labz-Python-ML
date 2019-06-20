@@ -78,27 +78,27 @@ class ClassificationRegression_Model:
     def Decision_tree_classifier(trainX,trainy,testX,testY):
 
         Dec_tree_classifier_reg=DecisionTreeClassifier(criterion='entropy',random_state=0)
-        Dec_tree_classifier_reg.fit(trainX , trainy.ravel())
+        Dec_tree_classifier_reg.fit(trainX , trainy)
         y_pred = Dec_tree_classifier_reg.predict(testX)
 
         # Visualising  the Training set Result
 
-        from matplotlib.colors import ListedColormap
-        X_Set,Y_Set=trainX,trainy.ravel()
-        X1,X2=np.meshgrid(np.arange(start=X_Set[:,0].min() -1,stop=X_Set[:,0].max() +1,step=0.01),
-                          np.arange(start=X_Set[:,1].min()-1,stop=X_Set[:,1].max() +1 ,step=0.01))
-
-        plt.contourf(X1,X2,Dec_tree_classifier_reg.predict(np.array([X1.ravel(),X2.ravel()]).T).reshape(X1.shape),
-                     alpha =0.75,cmap=ListedColormap(('r','g')))
-        plt.xlim(X1.min(),X2.max())
-        plt.ylim(X2.min(),X2.max())
-        for i,j in enumerate(np.unique(Y_Set)):
-            plt.scatter(X_Set[Y_Set == j,0],X_Set[Y_Set == j, 1],c=ListedColormap(('r','g'))(i),label=j)
-        plt.title("Decision Tree Classification for Predicting the Gender purchasing SUV (Training Set)")
-        plt.xlabel("Age")
-        plt.ylabel("Estimated Salary")
-        plt.legend()
-        plt.show()
+        # from matplotlib.colors import ListedColormap
+        # X_Set,Y_Set=trainX,trainy
+        # X1,X2=np.meshgrid(np.arange(start=X_Set[:,0].min() -1,stop=X_Set[:,0].max() +1,step=0.01),
+        #                   np.arange(start=X_Set[:,1].min()-1,stop=X_Set[:,1].max() +1 ,step=0.01))
+        #
+        # plt.contourf(X1,X2,Dec_tree_classifier_reg.predict(np.array([X1.ravel(),X2.ravel()]).T).reshape(X1.shape),
+        #              alpha =0.75,cmap=ListedColormap(('r','g')))
+        # plt.xlim(X1.min(),X2.max())
+        # plt.ylim(X2.min(),X2.max())
+        # for i,j in enumerate(np.unique(Y_Set)):
+        #     plt.scatter(X_Set[Y_Set == j,0],X_Set[Y_Set == j, 1],c=ListedColormap(('r','g'))(i),label=j)
+        # plt.title("Decision Tree Classification for Predicting the Gender purchasing SUV (Training Set)")
+        # plt.xlabel("Age")
+        # plt.ylabel("Estimated Salary")
+        # plt.legend()
+        # plt.show()
         dec_reg_pred = [y_pred,Dec_tree_classifier_reg]
         return dec_reg_pred
 
