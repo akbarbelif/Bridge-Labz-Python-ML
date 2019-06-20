@@ -40,7 +40,7 @@ class Rand_forest_classifier:
            y_pred, reg_model = pred_reg
 
            print("\nY_predicted Value:\n", y_pred.ravel())
-           print("\nY_Ground True Value:\n", y_test)
+           print("\nY_Ground True Value:\n", y_test.ravel())
 
            # Accuracy Calculation using confusion_matrix score
            Accuracy = ClassificationRegression_Model.confusion_matix(y_test, y_pred)
