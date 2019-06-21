@@ -17,27 +17,11 @@ class ClassificationRegression_Model:
         classifier_reg=LogisticRegression(random_state=0)
         classifier_reg.fit(trainX , trainy.ravel())
         y_pred = classifier_reg.predict(testX)
+        #Visualising
+        ClassificationRegression_Model.visualising(classifier_reg, trainX, trainy)
 
-        # Visualising  the Training set Result
-        from matplotlib.colors import ListedColormap
-        X_Set,Y_Set=trainX,trainy.ravel()
-        X1,X2=np.meshgrid(np.arange(start=X_Set[:,0].min() -1,stop=X_Set[:,0].max() +1,step=0.01),
-                          np.arange(start=X_Set[:,1].min()-1,stop=X_Set[:,1].max() +1 ,step=0.01))
-
-        plt.contourf(X1,X2,classifier_reg.predict(np.array([X1.ravel(),X2.ravel()]).T).reshape(X1.shape),
-                     alpha =0.75,cmap=ListedColormap(('r','g')))
-        plt.xlim(X1.min(),X2.max())
-        plt.ylim(X2.min(),X2.max())
-        for i,j in enumerate(np.unique(Y_Set)):
-            plt.scatter(X_Set[Y_Set == j,0],X_Set[Y_Set == j, 1],c=ListedColormap(('r','g'))(i),label=j)
-        plt.title("Logistic Regression for Predicting the Gender purchasing SUV (Training Set)")
-        plt.xlabel("Age")
-        plt.ylabel("Estimated Salary")
-        plt.legend()
-        plt.show()
-
-        print("Classifiction model:/n",classifier_reg)
-        print("Predication:/n",y_pred)
+        print("Classifiction model:/n", classifier_reg)
+        print("Predication:/n", y_pred)
         log_reg_pred=[y_pred,classifier_reg]
         return log_reg_pred
 
@@ -49,23 +33,8 @@ class ClassificationRegression_Model:
         scmclassifier_reg.fit(trainX ,trainy.ravel())
         y_pred = scmclassifier_reg.predict(testX)
 
-        #Visualising  the Training set Result
-        from matplotlib.colors import ListedColormap
-        X_Set,Y_Set=trainX,trainy.ravel()
-        X1,X2=np.meshgrid(np.arange(start=X_Set[:,0].min() -1,stop=X_Set[:,0].max() +1,step=0.01),
-                          np.arange(start=X_Set[:,1].min()-1,stop=X_Set[:,1].max() +1 ,step=0.01))
-
-        plt.contourf(X1,X2,scmclassifier_reg.predict(np.array([X1.ravel(),X2.ravel()]).T).reshape(X1.shape),
-                     alpha =0.75,cmap=ListedColormap(('r','g')))
-        plt.xlim(X1.min(),X2.max())
-        plt.ylim(X2.min(),X2.max())
-        for i,j in enumerate(np.unique(Y_Set)):
-            plt.scatter(X_Set[Y_Set == j,0],X_Set[Y_Set == j, 1],c=ListedColormap(('r','g'))(i),label=j)
-        plt.title("Support Vector Machine for Predicting the Gender purchasing SUV (Training Set)")
-        plt.xlabel("Age")
-        plt.ylabel("Estimated Salary")
-        plt.legend()
-        plt.show()
+        # Visualising
+        ClassificationRegression_Model.visualising(scmclassifier_reg, trainX, trainy)
         scm_reg_pred = [y_pred, scmclassifier_reg]
         return scm_reg_pred
 
@@ -77,24 +46,8 @@ class ClassificationRegression_Model:
         Dec_tree_classifier_reg.fit(trainX , trainy.ravel())
         y_pred = Dec_tree_classifier_reg.predict(testX)
 
-        # Visualising  the Training set Result
-
-        from matplotlib.colors import ListedColormap
-        X_Set,Y_Set=trainX,trainy.ravel()
-        X1,X2=np.meshgrid(np.arange(start=X_Set[:,0].min() -1,stop=X_Set[:,0].max() +1,step=0.01),
-                          np.arange(start=X_Set[:,1].min()-1,stop=X_Set[:,1].max() +1 ,step=0.01))
-
-        plt.contourf(X1,X2,Dec_tree_classifier_reg.predict(np.array([X1.ravel(),X2.ravel()]).T).reshape(X1.shape),
-                     alpha =0.75,cmap=ListedColormap(('r','g')))
-        plt.xlim(X1.min(),X2.max())
-        plt.ylim(X2.min(),X2.max())
-        for i,j in enumerate(np.unique(Y_Set)):
-            plt.scatter(X_Set[Y_Set == j,0],X_Set[Y_Set == j, 1],c=ListedColormap(('r','g'))(i),label=j)
-        plt.title("Decision Tree Classification for Predicting the Gender purchasing SUV (Training Set)")
-        plt.xlabel("Age")
-        plt.ylabel("Estimated Salary")
-        plt.legend()
-        plt.show()
+        # Visualising
+        ClassificationRegression_Model.visualising(Dec_tree_classifier_reg, trainX, trainy)
         dec_reg_pred = [y_pred,Dec_tree_classifier_reg]
         return dec_reg_pred
 
@@ -106,24 +59,9 @@ class ClassificationRegression_Model:
         Rand_forest_classifier_reg.fit(trainX , trainy.ravel())
         y_pred = Rand_forest_classifier_reg.predict(testX)
 
-        # Visualising  the Training set Result
+        # Visualising
+        ClassificationRegression_Model.visualising(Rand_forest_classifier_reg, trainX, trainy)
 
-        from matplotlib.colors import ListedColormap
-        X_Set,Y_Set=trainX,trainy.ravel()
-        X1,X2=np.meshgrid(np.arange(start=X_Set[:,0].min() -1,stop=X_Set[:,0].max() +1,step=0.01),
-                          np.arange(start=X_Set[:,1].min()-1,stop=X_Set[:,1].max() +1 ,step=0.01))
-
-        plt.contourf(X1,X2,Rand_forest_classifier_reg.predict(np.array([X1.ravel(),X2.ravel()]).T).reshape(X1.shape),
-                     alpha =0.75,cmap=ListedColormap(('r','g')))
-        plt.xlim(X1.min(),X2.max())
-        plt.ylim(X2.min(),X2.max())
-        for i,j in enumerate(np.unique(Y_Set)):
-            plt.scatter(X_Set[Y_Set == j,0],X_Set[Y_Set == j, 1],c=ListedColormap(('r','g'))(i),label=j)
-        plt.title("Random Forest Classification for Predicting the Gender purchasing SUV (Training Set)")
-        plt.xlabel("Age")
-        plt.ylabel("Estimated Salary")
-        plt.legend()
-        plt.show()
         rand_reg_pred=[y_pred,Rand_forest_classifier_reg]
         return rand_reg_pred
 
@@ -144,3 +82,26 @@ class ClassificationRegression_Model:
         from sklearn.metrics import confusion_matrix
         accuracy=confusion_matrix(y_true,y_pred)
         return accuracy
+
+
+    @staticmethod
+    def visualising(classifier_reg,trainX,trainy):
+
+        # Visualising  the Training set Result
+        from matplotlib.colors import ListedColormap
+        X_Set, Y_Set = trainX, trainy.ravel()
+        X1, X2 = np.meshgrid(np.arange(start=X_Set[:, 0].min() - 1, stop=X_Set[:, 0].max() + 1, step=0.01),
+                             np.arange(start=X_Set[:, 1].min() - 1, stop=X_Set[:, 1].max() + 1, step=0.01))
+
+        plt.contourf(X1, X2, classifier_reg.predict(np.array([X1.ravel(), X2.ravel()]).T).reshape(X1.shape),
+                     alpha=0.75, cmap=ListedColormap(('r', 'g')))
+        plt.xlim(X1.min(), X2.max())
+        plt.ylim(X2.min(), X2.max())
+        for i, j in enumerate(np.unique(Y_Set)):
+            plt.scatter(X_Set[Y_Set == j, 0], X_Set[Y_Set == j, 1], c=ListedColormap(('r', 'g'))(i), label=j)
+        plt.title("Logistic Regression for Predicting the Gender purchasing SUV (Training Set)")
+        plt.xlabel("Age")
+        plt.ylabel("Estimated Salary")
+        plt.legend()
+        plt.show()
+
