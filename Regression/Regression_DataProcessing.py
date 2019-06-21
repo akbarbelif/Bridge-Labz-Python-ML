@@ -12,16 +12,17 @@ class RegressionModelPreparation:
     @staticmethod
     def Storing_data(csv_path):
         # Store Data into training and testing csv
+        print(csv_path)
         dataset = pd.read_csv(csv_path,delimiter=None,sep=",")
         #old_lenght = len(dataset.columns)
-        print(dataset)
+        print(dataset.head())
         # Split dataset into Train and Testing
         from sklearn.model_selection import train_test_split
         train, test = train_test_split(dataset, test_size=0.2)
 
         # Export train and testing data into csv format
-        train.to_csv('../Scaler_Vector_Regression/Data/training.csv', header=True, index=None)
-        test.to_csv('../Scaler_Vector_Regression/Data/testing.csv', header=True, index=None)
+        train.to_csv('/home/admin1/Desktop/Deep-Learing/Classification/Data/training.csv', header=True, index=None)
+        test.to_csv('/home/admin1/Desktop/Deep-Learing/Classification/Data/testing.csv', header=True, index=None)
 
 
     # Data preprocessing
