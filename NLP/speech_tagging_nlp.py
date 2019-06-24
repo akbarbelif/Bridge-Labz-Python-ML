@@ -5,8 +5,8 @@ from nltk.tokenize import PunktSentenceTokenizer
 #PunktSentence Tokenizer is a unsuperier
 
 
-trainspeech=state_union.raw("*.txt")
-testspeech=state_union.raw("PM_Modi_Speech.txt")
+trainspeech=state_union.raw("/home/admin1/Desktop/Deep-Learing/NLP/PM_Modi_Speech")
+testspeech=state_union.raw("/home/admin1/Desktop/Deep-Learing/NLP/PM_Modi_Speech")
 custom_sent_token=PunktSentenceTokenizer(trainspeech)
 tokenized=custom_sent_token.tokenize(testspeech)
 
