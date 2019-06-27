@@ -7,7 +7,7 @@ import sys
 for line in sys.stdin:
     # remove leading and trailing whitespace
     line = line.strip()
-    # split the line into words
+    # split the line into words tuple(key and value pair)
     words = line.split()
     # increase counters
     for word in words:
