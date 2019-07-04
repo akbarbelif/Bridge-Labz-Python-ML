@@ -1,0 +1,60 @@
+https://data-flair.training/blogs/spark-installation-standalone-mode/
+
+Step to Install Apache Spark Standalone Mode in linux -
+
+1.Installing Scala(Apache Spark is written in Scala)
+
+Download Scala
+wget https://downloads.lightbend.com/scala/2.13.0/scala-2.13.0.tgz
+
+Untar scala
+sudo tar -xvf scala-2.13.0.tgz
+
+Move Scala
+sudo mv scala-2.13.0/ /usr/local/scala
+
+sudo chown -R Akbar:Akbar /usr/local/scala/
+
+nano ~/.bashrc
+
+export SCALA_HOME=/usr/local/scala
+export PATH=$PATH:$SCALA_HOME/bin
+
+source ~/.bashrc
+
+Verifying Scala Installation:
+
+scala -version
+
+2. Installing Spark
+Download Spark
+wget http://apachemirror.wuchna.com/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.7.tgz
+
+untar Spark and move
+sudo tar -xvf spark-2.4.3-bin-hadoop2.7.tgz /usr/local/
+
+Path /usr/local/spark-2.4.3-bin-hadoop2.7
+
+sudo chown -R Akbar:Akbar /usr/local/spark-2.4.3-bin-hadoop2.7/
+
+nano ~/.bashrc
+
+#SPARK_HOME
+export SPARK_HOME=/usr/local/spark-2.4.3-bin-hadoop2.7/
+export PATH=$PATH:$SPARK_HOME/bin
+
+source ~/.bashrc
+
+cd $SPARK_HOME
+
+./sbin/start-all.sh
+
+jps
+
+(To code in scala using spark)
+./bin/spark-shell
+
+
+
+
+
