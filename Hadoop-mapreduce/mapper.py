@@ -7,7 +7,7 @@ import sys
 for line in sys.stdin:
     # remove leading and trailing whitespace
     line = line.strip()
-    # split the line into words tuple(key and value pair)
+    # split the line into words
     words = line.split()
     # increase counters
     for word in words:
@@ -16,4 +16,4 @@ for line in sys.stdin:
         # Reduce step, i.e. the input for reducer.py
         #
         # tab-delimited; the trivial word count is 1
-        print ('%s\t%s' % (word, 1))
+        print('%s\t%s' % (word, 1))
