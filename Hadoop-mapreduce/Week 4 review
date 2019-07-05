@@ -1,0 +1,58 @@
+stop-all.sh
+
+hdfs namenode -format
+
+start-all.sh
+
+"Create "
+jps >> testing.txt
+
+
+hdfs dfs -ls /
+
+hdfc dfs mkdir /user
+
+hdfc dfs mkdir /user/Akbar
+
+hdfs dfs -D dfs.blocksize=1000024 -put Download/1GB.bin input100MB
+
+hdfs fsck /user/Akbar/input100MB -files -blocks
+
+"word Count using jar Example"
+hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-example* wordcount inputtxt outputtxt 
+
+hdfs dfs -cat /user/Akbar/outputtxt/part-r-00000
+
+"Word Count using python"
+hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-* -file mapper.py -mapper mapper.py -file reducer.py -reducer reducer.py -input /user/Akbar/inputtxt -output /user/Akbar/outputwc
+
+O/P:
+Error: java.lang.RuntimeException: PipeMapRed.waitOutputThreads(): subprocess failed with code 127
+        at org.apache.hadoop.streaming.PipeMapRed.waitOutputThreads(PipeMapRed.java:326)
+        at org.apache.hadoop.streaming.PipeMapRed.mapRedFinished(PipeMapRed.java:539)
+        at org.apache.hadoop.streaming.PipeMapper.close(PipeMapper.java:130)
+        at org.apache.hadoop.mapred.MapRunner.run(MapRunner.java:61)
+        at org.apache.hadoop.streaming.PipeMapRunner.run(PipeMapRunner.java:34)
+        at org.apache.hadoop.mapred.MapTask.runOldMapper(MapTask.java:465)
+        at org.apache.hadoop.mapred.MapTask.run(MapTask.java:349)
+        at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+        at java.security.AccessController.doPrivileged(Native Method)
+        at javax.security.auth.Subject.doAs(Subject.java:422)
+        at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1730)
+        at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+
+2019-07-05 13:55:09,242 INFO mapreduce.Job: Task Id : attempt_1562334847911_0005_m_000000_0, Status : FAILED
+Error: java.lang.RuntimeException: PipeMapRed.waitOutputThreads(): subprocess failed with code 127
+        at org.apache.hadoop.streaming.PipeMapRed.waitOutputThreads(PipeMapRed.java:326)
+        at org.apache.hadoop.streaming.PipeMapRed.mapRedFinished(PipeMapRed.java:539)
+        at org.apache.hadoop.streaming.PipeMapper.close(PipeMapper.java:130)
+        at org.apache.hadoop.mapred.MapRunner.run(MapRunner.java:61)
+        at org.apache.hadoop.streaming.PipeMapRunner.run(PipeMapRunner.java:34)
+        at org.apache.hadoop.mapred.MapTask.runOldMapper(MapTask.java:465)
+        at org.apache.hadoop.mapred.MapTask.run(MapTask.java:349)
+        at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:174)
+        at java.security.AccessController.doPrivileged(Native Method)
+        at javax.security.auth.Subject.doAs(Subject.java:422)
+        at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1730)
+        at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:168)
+
