@@ -83,7 +83,7 @@ Restart=on-abnormal
 WantedBy=multi-user.target
 
 
-
+--------------------------------------------------------------------------------------------------
 (start Kafka with the following command:)
 sudo systemctl start kafka
 (check the journal logs for the kafka unit)
@@ -92,6 +92,7 @@ sudo journalctl -u kafka
 (To enable kafka on server boot, run:)
 sudo systemctl enable kafka
 
+--------------------------------------------------------------------------------------------------
 
 Step 5 — Testing the Installation
 Publishing messages in Kafka requires:
@@ -100,7 +101,9 @@ A PRODUCER, which enables the publication of records and data to topics.
 A CONSUMER, which reads messages and data from topics.
 
 First, create a topic named TutorialTopic by typing:
+
 ~/kafka/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic TutorialTopic
+--------------------------------------------------------------------------------------------------
 
 (Create a producer from the command line using the kafka-console-producer.sh script
 Publish the string "Hello, World" to the TutorialTopic topic by typing:)
