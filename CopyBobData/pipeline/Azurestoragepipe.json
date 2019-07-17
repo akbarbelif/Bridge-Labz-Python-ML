@@ -2,6 +2,61 @@
 	"name": "Azurestoragepipe",
 	"properties": {
 		"description": "Azure blob storage pipeline containing Google shock google  Price",
+		"activities": [
+			{
+				"name": "CopynProcess",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/akbar.belif1@cgm4l.onmicrosoft.com/demoworkspace/demonotebook"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureDatabricksls",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "SourceBlob",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSetting",
+							"recursive": true,
+							"wildcardFileName": "*.*"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSetting"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "dsshockprice",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
 		"annotations": []
 	}
 }
