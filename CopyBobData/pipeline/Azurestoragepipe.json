@@ -8,7 +8,13 @@
 				"type": "DatabricksNotebook",
 				"dependsOn": [
 					{
-						"activity": "SourceBlob",
+						"activity": "SourceBlob1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SourceBlob2",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -31,7 +37,7 @@
 				}
 			},
 			{
-				"name": "SourceBlob",
+				"name": "SourceBlob1",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -69,13 +75,46 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "dsshockprice",
+						"referenceName": "Trainshockprice",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "dsshockprice",
+						"referenceName": "Trainshockprice",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "SourceBlob2",
+				"description": "Test Shock Price",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSetting",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSetting"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Testshockprice",
 						"type": "DatasetReference"
 					}
 				]
