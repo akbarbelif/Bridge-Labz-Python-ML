@@ -31,8 +31,12 @@
 				"typeProperties": {
 					"notebookPath": "/Users/akbar.belif1@cgm4l.onmicrosoft.com/demoworkspace/copy2blob",
 					"baseParameters": {
-						"input": {
-							"value": "@pipeline().parameters.name",
+						"accountkey": {
+							"value": "@pipeline().parameters.accountkey",
+							"type": "Expression"
+						},
+						"accountname": {
+							"value": "@pipeline().parameters.accountname",
 							"type": "Expression"
 						}
 					}
