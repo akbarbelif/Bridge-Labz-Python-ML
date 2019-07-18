@@ -5,12 +5,19 @@
 			"referenceName": "AzureBlobStorage_lnk",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"input": {
+				"type": "string",
+				"defaultValue": "Google_Stock_Price_Test.csv"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "Google_Stock_Price_Train.csv",
+				"folderPath": "input",
 				"container": "shockprice"
 			},
 			"columnDelimiter": ",",
