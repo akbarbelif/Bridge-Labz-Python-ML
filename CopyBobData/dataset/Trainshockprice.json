@@ -1,5 +1,5 @@
 {
-	"name": "dsshockprice",
+	"name": "Trainshockprice",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage_lnk",
@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "Google_Stock_Price_Train.csv",
 				"container": "shockprice"
 			},
 			"columnDelimiter": ",",
