@@ -29,7 +29,13 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/akbar.belif1@cgm4l.onmicrosoft.com/demoworkspace/demonotebook"
+					"notebookPath": "/Users/akbar.belif1@cgm4l.onmicrosoft.com/demoworkspace/demonotebook",
+					"baseParameters": {
+						"input": {
+							"value": "@pipeline().parameters.name",
+							"type": "Expression"
+						}
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "AzureDatabricksls",
