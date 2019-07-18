@@ -1,0 +1,21 @@
+{
+	"name": "shockpricedestination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_lnk",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "finaldestination"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
