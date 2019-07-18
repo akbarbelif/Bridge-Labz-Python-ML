@@ -29,7 +29,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/akbar.belif1@cgm4l.onmicrosoft.com/demoworkspace/demonotebook",
+					"notebookPath": "/Users/akbar.belif1@cgm4l.onmicrosoft.com/demoworkspace/copy2blob",
 					"baseParameters": {
 						"input": {
 							"value": "@pipeline().parameters.name",
