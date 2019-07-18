@@ -5,12 +5,6 @@
 			"referenceName": "AzureBlobStorage_lnk",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"input": {
-				"type": "string",
-				"defaultValue": "Google_Stock_Price_Test.csv"
-			}
-		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
