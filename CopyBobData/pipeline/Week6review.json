@@ -11,7 +11,7 @@
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
-					"retryIntervalInSeconds": 29,
+					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
@@ -73,6 +73,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"notebookPath": "/Users/akbar.belif1@cgm4l.onmicrosoft.com/week6review/housingprice",
 					"baseParameters": {
 						"storage_name": {
 							"value": "@pipeline().parameters.storage_name",
