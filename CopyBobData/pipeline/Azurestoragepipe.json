@@ -32,10 +32,6 @@
 						"accountname": {
 							"value": "@pipeline().parameters.accountname",
 							"type": "Expression"
-						},
-						"ouput": {
-							"value": "@activity('SourceBlob').output",
-							"type": "Expression"
 						}
 					}
 				},
