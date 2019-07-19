@@ -1,0 +1,105 @@
+{
+	"name": "Week6review",
+	"properties": {
+		"description": "house-prices predicition",
+		"activities": [
+			{
+				"name": "Housing_price",
+				"description": "House Price Data",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 29,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSetting",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSetting"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSetting"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSetting",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "houseprice",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "houseprice",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Processhouseprice",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Housing_price",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"baseParameters": {
+						"storage_name": {
+							"value": "@pipeline().parameters.storage_name",
+							"type": "Expression"
+						},
+						"storage_access_token": {
+							"value": "@pipeline().parameters.storage_access_token",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "week6reviewADlink",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"storage_name": {
+				"type": "string",
+				"defaultValue": "week6review"
+			},
+			"storage_access_token": {
+				"type": "string",
+				"defaultValue": "QYWyteohGdGR9DIhFplyStZOs2VlXmRS6+dpvopqsT6FneIU9Dl3+0pAkBuwe/jnUYrzvI6Oen1X9+IOsQiZTg=="
+			}
+		},
+		"annotations": []
+	}
+}
