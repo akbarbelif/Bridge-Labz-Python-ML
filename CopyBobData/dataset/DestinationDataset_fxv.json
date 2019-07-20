@@ -1,0 +1,14 @@
+{
+	"name": "DestinationDataset_fxv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CosmosDbls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DocumentDbCollection",
+		"typeProperties": {
+			"collectionName": "IoT"
+		}
+	}
+}
