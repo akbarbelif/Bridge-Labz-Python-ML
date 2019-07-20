@@ -8,7 +8,7 @@
 		"annotations": [],
 		"type": "DocumentDbCollection",
 		"typeProperties": {
-			"collectionName": "IoT"
+			"collectionName": "IoT1"
 		}
 	}
 }
