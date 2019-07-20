@@ -15,6 +15,18 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'AzureDatabricksls'"
 		},
+		"CosmosDbls_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'CosmosDbls'"
+		},
+		"week6reviewADlink_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'week6reviewADlink'"
+		},
+		"week6reviewlink_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'week6reviewlink'"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -47,6 +59,15 @@
 					},
 					"AzureDatabricksls_accessToken": {
 						"value": "[parameters('AzureDatabricksls_accessToken')]"
+					},
+					"CosmosDbls_connectionString": {
+						"value": "[parameters('CosmosDbls_connectionString')]"
+					},
+					"week6reviewADlink_accessToken": {
+						"value": "[parameters('week6reviewADlink_accessToken')]"
+					},
+					"week6reviewlink_connectionString": {
+						"value": "[parameters('week6reviewlink_connectionString')]"
 					}
 				}
 			},

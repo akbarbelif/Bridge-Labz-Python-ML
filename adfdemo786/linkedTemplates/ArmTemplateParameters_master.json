@@ -11,6 +11,15 @@
 		"AzureDatabricksls_accessToken": {
 			"value": ""
 		},
+		"CosmosDbls_connectionString": {
+			"value": ""
+		},
+		"week6reviewADlink_accessToken": {
+			"value": ""
+		},
+		"week6reviewlink_connectionString": {
+			"value": ""
+		},
 		"containerUri": {
 			"value": ""
 		},

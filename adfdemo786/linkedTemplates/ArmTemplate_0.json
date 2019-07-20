@@ -14,6 +14,18 @@
 		"AzureDatabricksls_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'AzureDatabricksls'"
+		},
+		"CosmosDbls_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'CosmosDbls'"
+		},
+		"week6reviewADlink_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'week6reviewADlink'"
+		},
+		"week6reviewlink_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'week6reviewlink'"
 		}
 	},
 	"variables": {
@@ -51,6 +63,125 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CosmosDbls')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CosmosDb",
+				"typeProperties": {
+					"connectionString": "[parameters('CosmosDbls_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/week6reviewADlink')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "week 6 review AD link service",
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://eastus.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('week6reviewADlink_accessToken')]"
+					},
+					"existingClusterId": "0717-070615-coda723"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/week6reviewlink')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "week 6 review link service",
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('week6reviewlink_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DestinationDataset_fxv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CosmosDbls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DocumentDbCollection",
+				"typeProperties": {
+					"collectionName": "IoT1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CosmosDbls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_fxv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_lnk",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Google_Stock_Price_Train.csv",
+						"folderPath": "input",
+						"container": "shockprice"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Open",
+						"type": "String"
+					},
+					{
+						"name": "High",
+						"type": "String"
+					},
+					{
+						"name": "Low",
+						"type": "String"
+					},
+					{
+						"name": "Close",
+						"type": "String"
+					},
+					{
+						"name": "Volume",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_lnk')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Testshockprice')]",
@@ -114,6 +245,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": "Google_Stock_Price_Train.csv",
+						"folderPath": "input",
 						"container": "shockprice"
 					},
 					"columnDelimiter": ",",
@@ -144,6 +276,59 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_lnk')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/houseprice')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "week6reviewlink",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "house-prices.csv",
+						"folderPath": "input",
+						"container": "houseprice"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/week6reviewlink')]"
 			]
 		},
 		{
@@ -184,13 +369,7 @@
 						"type": "DatabricksNotebook",
 						"dependsOn": [
 							{
-								"activity": "SourceBlob1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "SourceBlob2",
+								"activity": "SourceBlob",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -207,8 +386,12 @@
 						"typeProperties": {
 							"notebookPath": "/Users/akbar.belif1@cgm4l.onmicrosoft.com/demoworkspace/demonotebook",
 							"baseParameters": {
-								"input": {
-									"value": "@pipeline().parameters.name",
+								"accountkey": {
+									"value": "@pipeline().parameters.accountkey",
+									"type": "Expression"
+								},
+								"accountname": {
+									"value": "@pipeline().parameters.accountname",
 									"type": "Expression"
 								}
 							}
@@ -219,7 +402,7 @@
 						}
 					},
 					{
-						"name": "SourceBlob1",
+						"name": "SourceBlob",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -269,10 +452,113 @@
 								"parameters": {}
 							}
 						]
+					}
+				],
+				"parameters": {
+					"accountname": {
+						"type": "string",
+						"defaultValue": "cgtrainingbatch22019"
 					},
+					"accountkey": {
+						"type": "string",
+						"defaultValue": "7+djZSOsUAc25tFUcIETU3YB3kKUuyqW+RJ5ickrm9cRPZl7XQ+a6Mozt7h3WQuL9p7NPofS6Lbh3N4rpOvbUQ=="
+					},
+					"input": {
+						"type": "string",
+						"defaultValue": "Google_Stock_Price_Test.csv"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricksls')]",
+				"[concat(variables('factoryId'), '/datasets/Trainshockprice')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Blob2Cosmos')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Copy Blob cvs to Cosmos ",
+				"activities": [
 					{
-						"name": "SourceBlob2",
-						"description": "Test Shock Price",
+						"name": "CopyBlob2Cosmos",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "shockprice/input/Google_Stock_Price_Train.csv"
+							},
+							{
+								"name": "Destination",
+								"value": "IoT1"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSetting",
+									"recursive": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSetting",
+									"skipLineCount": 0
+								}
+							},
+							"sink": {
+								"type": "DocumentDbCollectionSink",
+								"nestingSeparator": ".",
+								"writeBatchSize": 1000,
+								"writeBehavior": "insert"
+							},
+							"enableStaging": false,
+							"parallelCopies": 4,
+							"enableSkipIncompatibleRow": true,
+							"dataIntegrationUnits": 16
+						},
+						"inputs": [
+							{
+								"referenceName": "SourceDataset_fxv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DestinationDataset_fxv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SourceDataset_fxv')]",
+				"[concat(variables('factoryId'), '/datasets/DestinationDataset_fxv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Week6review')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "house-prices predicition",
+				"activities": [
+					{
+						"name": "Housing_price",
+						"description": "House Price Data",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -302,33 +588,32 @@
 								"formatSettings": {
 									"type": "DelimitedTextWriteSetting",
 									"quoteAllText": true,
-									"fileExtension": ".csv"
+									"fileExtension": ".txt"
 								}
 							},
 							"enableStaging": false
 						},
 						"inputs": [
 							{
-								"referenceName": "Testshockprice",
+								"referenceName": "houseprice",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "Testshockprice",
+								"referenceName": "houseprice",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						]
 					},
 					{
-						"name": "DestinationBlob1",
-						"description": "finaldestination output",
-						"type": "Copy",
+						"name": "Processhouseprice",
+						"type": "DatabricksNotebook",
 						"dependsOn": [
 							{
-								"activity": "CopynProcess",
+								"activity": "Housing_price",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -343,59 +628,39 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSetting",
-									"recursive": true,
-									"wildcardFileName": "*.*"
+							"notebookPath": "/Users/akbar.belif1@cgm4l.onmicrosoft.com/week6review/housingprice",
+							"baseParameters": {
+								"storage_name": {
+									"value": "@pipeline().parameters.storage_name",
+									"type": "Expression"
 								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSetting"
+								"storage_access_token": {
+									"value": "@pipeline().parameters.storage_access_token",
+									"type": "Expression"
 								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSetting",
-									"copyBehavior": "MergeFiles"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSetting",
-									"quoteAllText": true,
-									"fileExtension": ".csv"
-								}
-							},
-							"enableStaging": false
+							}
 						},
-						"inputs": [
-							{
-								"referenceName": "shockpricedestination",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "shockpricedestination",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
+						"linkedServiceName": {
+							"referenceName": "week6reviewADlink",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"parameters": {
-					"name": {
-						"type": "string"
+					"storage_name": {
+						"type": "string",
+						"defaultValue": "week6review"
+					},
+					"storage_access_token": {
+						"type": "string",
+						"defaultValue": "QYWyteohGdGR9DIhFplyStZOs2VlXmRS6+dpvopqsT6FneIU9Dl3+0pAkBuwe/jnUYrzvI6Oen1X9+IOsQiZTg=="
 					}
 				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricksls')]",
-				"[concat(variables('factoryId'), '/datasets/Trainshockprice')]",
-				"[concat(variables('factoryId'), '/datasets/Testshockprice')]",
-				"[concat(variables('factoryId'), '/datasets/shockpricedestination')]"
+				"[concat(variables('factoryId'), '/datasets/houseprice')]",
+				"[concat(variables('factoryId'), '/linkedServices/week6reviewADlink')]"
 			]
 		}
 	]
