@@ -4,7 +4,7 @@
 		"description": "Copy Blob cvs to Cosmos ",
 		"activities": [
 			{
-				"name": "Copy_fxv",
+				"name": "CopyBlob2Cosmos",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -21,7 +21,7 @@
 					},
 					{
 						"name": "Destination",
-						"value": "IoT"
+						"value": "IoT1"
 					}
 				],
 				"typeProperties": {
@@ -40,7 +40,7 @@
 						"type": "DocumentDbCollectionSink",
 						"nestingSeparator": ".",
 						"writeBatchSize": 1000,
-						"writeBehavior": "upsert"
+						"writeBehavior": "insert"
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true
