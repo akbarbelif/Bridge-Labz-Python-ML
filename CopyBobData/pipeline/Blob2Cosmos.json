@@ -40,7 +40,7 @@
 						"type": "DocumentDbCollectionSink",
 						"nestingSeparator": ".",
 						"writeBatchSize": 1000,
-						"writeBehavior": "insert"
+						"writeBehavior": "upsert"
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true
